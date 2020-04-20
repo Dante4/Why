@@ -7,6 +7,8 @@ Web-exploits.
 
 source venv/bin/activate
 
+flask run --host=0.0.0.0
+
 При установленном python3 в системе.
 
 Версия с эксплоитами
