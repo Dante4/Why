@@ -1,7 +1,7 @@
 # Why
 Web-exploits.
 
-Использован python3, Flask
+Использован python3.5, Flask
 
 Для запуска стоит использовать команду:
 
