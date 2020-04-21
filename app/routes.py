@@ -80,13 +80,15 @@ def explore():
     return render_template('index.html', title='Explore', posts=posts)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
-@login_required
 def edit_profile():
     form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
-        db.session.commit()
+        connection = db.engine.raw_connection()
+        cursor = connection.cursor()
+        cursor.execute("update user set username = '" + form.username.data + "' where username = '"+ current_user.username + "'")
+        cursor.execute("update user set about_me = '" + form.about_me.data + "' where username = '"+ current_user.username + "'")
+        connection.commit()
+        connection.close()
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':

@@ -19,19 +19,13 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_username(self, username):
-        connection = db.engine.raw_connection()
-        cursor = connection.cursor()
-        user = [row[1] for row in cursor.executescript("select * from user where username='"+username.data+"'")]
-        connection.close()
-        if user != []:
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
             raise ValidationError('Please use a different username.')
 
     def validate_email(self, email):
-        connection = db.engine.raw_connection()
-        cursor = connection.cursor()
-        user = [row[2] for row in cursor.executescript("select * from user where username='"+email.data+"'")]
-        connection.close()
-        if user != []:
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
             raise ValidationError('Please use a different email address.')
 
 class EditProfileForm(FlaskForm):
